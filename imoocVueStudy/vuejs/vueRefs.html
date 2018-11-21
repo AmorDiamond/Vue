@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <div ref="hello" @click="handleClick">我是Html标签</div>
+    <div>
+        <counter ref="one" @change="getTotal"></counter>
+        <counter ref="two" @change="getTotal"></counter>
+        <p>{{total}}</p>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.component('counter', {
+      data: function () {
+        return {
+          number: 0,
+        }
+      },
+      template: '<div @click="handleClick">{{number}}</div>',
+      methods: {
+        handleClick: function () {
+          this.number ++;
+          this.$emit('change');
+        }
+      }
+    });
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        total: 0,
+      },
+      methods: {
+        handleClick: function() {
+          /*通过vue的refs可以获取到对应的dom或者组件，可以得到dom的信息和组件里的数据*/
+          console.log(this.$refs.hello, this.$refs.hello.innerHTML);
+        },
+        getTotal: function () {
+          /*父组件通过refs获取子组件的数据做处理*/
+          this.total = this.$refs.one.number + this.$refs.two.number;
+        }
+      }
+    })
+</script>
+</body>
+</html>

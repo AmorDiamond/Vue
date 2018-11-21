@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>非父子组件间传值(Bus/总线程/发布订阅模式/观察者模式)</title>
+</head>
+<body>
+<div id="app">
+    <child content="Cao"></child>
+    <child content="Jie"></child>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.prototype.bus = new Vue();
+    var child = {
+      props: ['content'],
+      data: function () {
+        return {
+          selfContent: this.content,
+        }
+      },
+      template: '<div @click="handleClick">{{selfContent}}</div>',
+      methods: {
+        handleClick: function () {
+          this.bus.$emit('change', this.selfContent);
+        }
+      },
+      mounted: function () {
+        var _this = this;
+        /*bus触发change事件后，所有使用啦这个组件的地点都会被执行*/
+        this.bus.$on('change', function(msg) { // 这里的function改变了this的指向，所以前面需要先定义需要的this
+          console.log(_this.selfContent);
+          _this.selfContent = msg;
+        });
+      }
+    };
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        child
+      },
+      data: {}
+    })
+</script>
+</body>
+</html>

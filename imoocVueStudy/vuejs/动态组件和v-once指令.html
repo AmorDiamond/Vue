@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <child-one v-if="type === 'child-one'"></child-one>
+    <child-two v-if="type === 'child-two'"></child-two>
+    <button @click="change">切换</button>
+    <hr>
+    <!--使用动态组件实现切换-->
+    <component :is="type"></component>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    /*如果组件里的数据不会更改可以为其添加v-once属性，这样会将dom保存到内存中，不会注销重新创建，有效的提供静态展示效率*/
+    Vue.component('child-one', {
+      template: '<div v-once>child-one</div>'
+    });
+    Vue.component('child-two', {
+      template: '<div>child-two</div>'
+    });
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        type: 'child-one',
+      },
+      methods: {
+        change: function () {
+          this.type = this.type === 'child-one' ? 'child-two' : 'child-one';
+        }
+      }
+    })
+</script>
+</body>
+</html>

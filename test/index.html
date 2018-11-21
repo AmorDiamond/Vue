@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    {{message}}
+    <div class="">
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <custom-input v-model="searchText"></custom-input>
+        <p>{{searchText}}</p>
+        <alert-box>
+            Something bad happened.
+        </alert-box>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+  // 定义一个名为 button-counter 的新组件
+  Vue.component('button-counter', {
+    data: function () {
+      return {
+        count: 0
+      }
+    },
+    template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+  });
+  Vue.component('custom-input', {
+    props: ['value'],
+    template: `
+    <input
+      v-bind:value="value"
+      v-on:input="$emit('input', $event.target.value)"
+    >
+  `
+  });
+  Vue.component('alert-box', {
+    template: `
+    <div class="demo-alert-box">
+      <strong>Error!</strong>
+      <slot></slot>
+    </div>
+  `
+  });
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue!',
+        searchText: ''
+      },
+      mounted: function(){
+        this.changeInfo();
+      },
+      methods: {
+        changeInfo: function(){
+          console.log('changeInfo')
+        }
+      }
+    });
+</script>
+</body>
+</html>

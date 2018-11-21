@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <child>
+        <h1>Cao</h1>
+    </child>
+    <hr>
+    <tpl-content>
+        <h1 slot="header">header</h1>
+        <h2 slot="footer">footer</h2>
+    </tpl-content>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var child = {
+      // props: ['content'],
+      template: `<div>
+                    <p>hello</p>
+                    <slot>默认内容</slot>
+                </div>`,
+    };
+    var tplContent = {
+      template: `<div>
+                    <slot name="header"></slot>
+                    <div>content</div>
+                    <slot name="footer"></slot>
+                </div>`
+    };
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        child,
+        tplContent,
+      },
+      data: {}
+    });
+</script>
+</body>
+</html>

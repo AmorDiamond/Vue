@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    /*Vue里css动画实现原理：
+给元素或者组件外包裹一层transition标签后，transition包裹的标签显示和隐藏时，vue会自动给标签在某一时间点添加class类名，比如显示的时候，最开始一瞬间会添加上v-enter和v-enter-active，在第二瞬间会将v-enter去除新增v-enter-to类，周期的最后时间会将所有添加的类名去除，我们就是通过给整个周期里不同类名设置不同的css状态，实现的css3动画。*/
+    .v-enter{
+        opacity: 0;
+    }
+    .v-enter-active{
+        transition: opacity 1.5s;
+    }
+    
+    /*隐藏的时候会先添加类名v-leave和v-leave-active，第二阶段会去除v-leave类新增v-leave-to，周期最后会将所有类名去除*/
+    .v-leave-to{
+        opacity: 0;
+    }
+    .v-leave-active{
+        transition: opacity 1.5s;
+    }
+    /*可以给transition设置属性name，然后通过其name的值修改类名前缀*/
+    .fade-enter, .fade-leave-to{
+        opacity: 0;
+    }
+    .fade-enter-active, .fade-leave-active{
+        transition: opacity 1.5s;
+    }
+</style>
+<body>
+<div id="app">
+    <transition>
+        <child v-if="show"></child>
+    </transition>
+    <!--可以给transition设置属性name，然后通过其name的值修改类名前缀-->
+    <transition name="fade">
+        <child v-if="show"></child>
+    </transition>
+    <button @click="change">切换</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.component('child', {
+      template: '<div>hello</div>'
+    });
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        show: true,
+      },
+      methods: {
+        change: function () {
+          this.show = !this.show;
+        }
+      }
+    })
+</script>
+</body>
+</html>

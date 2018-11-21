@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <child></child>
+    <hr>
+    <!--作用域插槽用于子组件里面循环显示数据时，显示的DOM结构需要由外部父组件传递的时候-->
+    <!--作用域插槽必须用<template>包裹，同时必须定义slot-scope='属性名' 来接受子组件传出的值。
+注：在 2.5.0+，slot-scope 能被用在任意元素或组件中而不再局限于 <template>。
+(来自官方手册：https://cn.vuejs.org/v2/guide/components.html#%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD)-->
+    <scope-slot>
+        <template slot-scope="props">
+            <h1>{{props.item}}</h1>
+        </template>
+    </scope-slot>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var child = {
+      data: function () {
+        return {
+          list : [1, 2, 3, 4]
+        }
+      },
+      template: `<div>
+                    <ul>
+                        <li v-for="item of list">{{item}}</li>
+                    </ul>
+                </div>`
+    };
+    var scopeSlot = {
+      data: function () {
+        return {
+          list: [1, 2, 3, 4]
+        }
+      },
+      template: `<div>
+                    <ul>
+                        <slot v-for="item of list" :item="item"></slot>
+                    </ul>
+                </div>`
+    };
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        child,
+        scopeSlot,
+      },
+      data: {}
+    })
+</script>
+</body>
+</html>

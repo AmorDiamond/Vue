@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <child @click="handleClick"></child>
+    <child2 @click.native="handleClick"></child2>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    /*
+    1.在自定义的组件上使用@click是无法直接触发click事件的，vue会将其当作自定义的事件，需要在组件内去触发这个自定义的事件才会执行。
+    2.在自定义组件里通过 this.$emit('事件名') 触发绑定在该组件上对应的自定义事件。
+    3.如果需要在自定义的组件上直接实现@click事件需要使用@click.native监听原生点击事件。
+    */
+    var child = {
+      template: '<div @click="handleClick">Hello</div>',
+      methods: {
+        handleClick: function () {
+          alert('child click');
+          this.$emit('click');
+        }
+      }
+    };
+    var child2 = {
+      template: '<div>组件上直接触发点击事件</div>',
+    };
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        child,
+        child2
+      },
+      data: {},
+      methods: {
+        handleClick: function() {
+          alert('hello');
+        }
+      }
+    })
+</script>
+</body>
+</html>

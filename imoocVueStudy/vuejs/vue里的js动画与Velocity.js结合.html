@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <transition
+      @enter="enter"
+      @after-enter="afterEnter"
+      @leave="leave"
+      @after-leave="afterLeave"
+      @before-leave="beforeLeave"
+      @before-enter="beforeEnter">
+        <child v-if="show"></child>
+    </transition>
+    <transition
+      @enter="enter2"
+      @after-enter="afterEnter2"
+      @before-enter="beforeEnter2">
+        <child v-if="show"></child>
+    </transition>
+    <button @click="change">切换</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/velocity.js"></script>
+<script>
+  Vue.component('child', {
+    template: '<div>Hello World</div>'
+  });
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      show: true,
+    },
+    methods: {
+      change: function () {
+        this.show = !this.show;
+      },
+      beforeEnter: function (el) {
+        console.log('beforeEnter', el);
+        el.style.color = 'red';
+      },
+      enter: function (el, done) {
+        console.log('enter', el);
+        /*进入enter后让其两秒后为绿色*/
+        setTimeout(function() {
+          el.style.color = 'green';
+        }, 2000);
+        /*进入enter后让其四秒后为才结束enter，进行后面的afterEnter*/
+        setTimeout(function() {
+          done()
+        }, 4000);
+      },
+      afterEnter: function (el) {
+        console.log('afterEnter', el);
+        el.style.color = 'black';
+      },
+      beforeLeave: function (el) {
+        console.log('beforeLeave', el)
+      },
+      leave: function (el) {
+        console.log('leave', el)
+      },
+      afterLeave: function (el) {
+        console.log('afterLeave', el)
+      },
+      beforeEnter2: function (el, done) {
+        console.log('enter', el);
+        Velocity(el, {
+          opacity: 0
+        }, {
+          duration: 0,
+          complete: done
+        })
+      },
+      enter2: function (el, done) {
+        console.log('enter', el);
+        Velocity(el, {
+          opacity: 1
+        }, {
+          duration: 2000,
+          complete: done
+        })
+      },
+      afterEnter2: function (el) {
+        console.log('afterEnter', el);
+        alert('动画结束');
+      },
+    }
+  })
+</script>
+</body>
+</html>

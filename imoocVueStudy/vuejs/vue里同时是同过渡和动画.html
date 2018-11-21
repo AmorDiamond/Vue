@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/animate.css">
+    <style>
+        .fade-enter, .fade-leave-to{
+            opacity: 0;
+        }
+        .fade-enter-active, .fade-leave-active{
+            transition: opacity 3s;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--因为可以通过给transition标签自定义动画过程中不同阶段的类名，所以可以使用animatecss库来实现动画-->
+    <transition name="fade" enter-active-class="animated bounce" leave-active-class="animated rubberBand" enter-to-class="animated ">
+        <child v-if="show"></child>
+    </transition>
+    <hr>
+    <!--给transition设置appear属性可以初始渲染的过渡，默认和进入/离开过渡一样，同样也可以自定义 CSS 类名-->
+    <transition appear name="fade" enter-active-class="animated bounce" leave-active-class="animated rubberBand" enter-to-class="animated ">
+        <child v-if="show"></child>
+    </transition>
+
+    <hr>
+    <!--给transition设置appear属性可以初始渲染的过渡，可以自定义 CSS 类名-->
+    <transition appear appear-active-class="animated rollIn" name="fade" enter-active-class="animated bounce" leave-active-class="animated rubberBand" enter-to-class="animated ">
+        <child v-if="show"></child>
+    </transition>
+
+    <hr>
+    <!--同时存在过渡和动画，通过type设置监听transition或者animation的时长-->
+    <transition
+      v-on:enter="enter"
+      v-on:after-enter="afterEnter"
+      v-on:leave="leave"
+      v-on:after-leave="afterLeave"
+      type="transition" appear appear-active-class="animated rollIn" name="fade" enter-active-class="animated bounce fade-enter-active" leave-active-class="animated rubberBand fade-leave-active" enter-to-class="animated ">
+        <child v-if="show"></child>
+    </transition>
+
+    <hr>
+    <!--同时存在过渡和动画，通过设置:duration来定义过渡持续时长(以毫秒计)-->
+    <transition
+      v-on:enter="enter"
+      v-on:after-enter="afterEnter"
+      v-on:leave="leave"
+      v-on:after-leave="afterLeave"
+      :duration="6000" appear appear-active-class="animated rollIn" name="fade" enter-active-class="animated bounce fade-enter-active" leave-active-class="animated rubberBand fade-leave-active" enter-to-class="animated ">
+        <child v-if="show"></child>
+    </transition>
+
+    <hr>
+    <!--同时存在过渡和动画，通过设置:duration来定义进入持续时长和移出持续时长-->
+    <transition
+      v-on:enter="enter"
+      v-on:after-enter="afterEnter"
+      v-on:leave="leave"
+      v-on:after-leave="afterLeave"
+      :duration="{enter: 8000, leave: 10000}" appear appear-active-class="animated rollIn" name="fade" enter-active-class="animated bounce fade-enter-active" leave-active-class="animated rubberBand fade-leave-active" enter-to-class="animated ">
+        <child v-if="show"></child>
+    </transition>
+    <!--不同的过渡持续时长会影响不同时间触发javaScript钩子-->
+    <button @click="change">切换</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+  Vue.component('child', {
+    template: '<div>Hello World</div>'
+  });
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      show: true,
+    },
+    methods: {
+      change: function () {
+        this.show = !this.show;
+      },
+      enter: function (el) {
+        console.log('enter', el)
+      },
+      afterEnter: function (el) {
+        console.log('afterEnter', el)
+      },
+      leave: function (el) {
+        console.log('leave', el)
+      },
+      afterLeave: function (el) {
+        console.log('afterLeave', el)
+      }
+    }
+  })
+</script>
+</body>
+</html>

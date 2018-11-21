@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .fade-enter, .fade-leave-to{
+            opacity: 0;
+        }
+        .fade-enter-active, .fade-leave-active{
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <css-fade :show="show">
+        <h1>内容</h1>
+    </css-fade>
+    <fade :show="show">
+        <h1>js动画</h1>
+    </fade>
+    <button @click="change">切换</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/velocity.js"></script>
+<script>
+    /*在transition里使用slot插槽必须外部传内容，不支持slot里设置默认显示内容*/
+  Vue.component('cssFade', {
+    props: ['show'],
+    template: `
+                <transition name="fade">
+                    <slot v-if="show">默认内容</slot>
+                </transition>
+              `,
+  });
+  /*建议将复用的动画效果通过js封装在组件里实现，不用外部定义css*/
+  /*Vue的javascript钩子里只有enter和leave周期存在done方法，javascript钩子只能在transition上绑定*/
+  Vue.component('fade', {
+    props: ['show'],
+    template: `
+                <transition @enter="enter"
+                @before-enter="beforeEnter"
+                @leave="leave"
+                @before-leave="beforeLeave">
+                    <slot v-if="show">默认内容</slot>
+                </transition>
+              `,
+    methods: {
+      beforeEnter: function (el) {
+        el.style.opacity = 0;
+        // el.style.transition = 'opacity 1s';
+      },
+      enter: function (el, done) {
+        console.log(el);
+        Velocity(el, {
+          // color: 'green',
+          opacity: 1,
+        }, {
+          duration: 1000,
+          complete: done,
+        })
+      },
+      beforeLeave: function (el) {
+
+      },
+      leave: function (el, done) {
+        Velocity(el, {
+          // color: 'green',
+          opacity: 0,
+        }, {
+          duration: 1000,
+          complete: done,
+        })
+      },
+    }
+  });
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      show: true,
+      list: ['hello World']
+    },
+    methods: {
+      change: function () {
+        this.show = !this.show;
+      },
+      handleAdd: function () {
+        this.list.push('Hello World');
+      },
+    }
+  })
+</script>
+</body>
+</html>

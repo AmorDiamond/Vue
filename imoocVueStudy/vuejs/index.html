@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <p>{{message}}</p>
+    <ul>
+        <todo-item v-for="(item, index) in list" v-bind:content="'我是content '+item +' ' + index"></todo-item>
+    </ul>
+    <ul>
+        <li is="todo-item" v-for="(item, key, index) in userInfo" :content="'我是content '+ key +' ' + item +' ' + index"></li>
+    </ul>
+    <div>{{fullName}}{{age}}</div>
+    <div>{{fullNameFn()}}</div>
+    <div>{{fullNameStr}}</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var TodoItem = {
+      props: ['content'],
+      template: '<li>{{content}}</li>'
+    };
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        TodoItem
+      },
+      data: {
+        message: '内容',
+        firstName: 'cao',
+        lastName: 'jie',
+        fullNameStr: 'cao jie',
+        age: 18,
+        list: ['angular', 'vue', 'react'],
+        userInfo: {
+          name: 'cao jie',
+          age: 18,
+        },
+      },
+      methods: {
+        /*在methods里的计算方法不会有缓存机制，界面数据有变化都会被执行*/
+        fullNameFn: function() {
+          console.log('进行啦方法计算');
+          return this.firstName + this.lastName;
+        }
+      },
+      /*vue生命周期钩子到了对应的时间点就会自动执行，不同自定义方法需要写在methods里*/
+      beforeCreate: () => {
+        console.log(1, this)
+      },
+      mounted: function() {
+        console.log('2', this)
+      },
+      /*计算属性*/
+      /*有缓存机制，如果依赖的数据没有被更改不会被触发*/
+      computed: {
+        fullName: function() {
+          console.log('进行啦计算属性');
+          return this.firstName + this.lastName;
+        }
+      },
+      /*使用watch侦听器进行计算属性*/
+      // 也有缓存机制，只有当里面依赖的数据更改才会触发，比computed复杂
+      watch: {
+        firstName: function() {
+          console.log('进行啦watch计算属性');
+          this.fullNameStr = this.firstName + this.lastName;
+        },
+        lastName: function() {
+          console.log('进行啦watch计算属性');
+          this.fullNameStr = this.firstName + this.lastName;
+        },
+      }
+    })
+</script>
+</body>
+</html>

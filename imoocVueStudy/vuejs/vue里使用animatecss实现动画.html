@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @keyframes bounce-in {
+            0%{
+                transform: scale(1);
+            }
+            50%{
+                transform: scale(1.5);
+            }
+            100%{
+                transform: scale(1);
+            }
+        }
+        /*因为v-enter-active和v-leave-active整个周期一直存在，所以可以给其添加持续的动画效果*/
+        .fade-enter-active{
+            transform-origin: left center;
+            animation: bounce-in 1s;
+        }
+        .fade-leave-active{
+            transform-origin: left center;
+            animation: bounce-in 1s reverse;
+        }
+    </style>
+    <link rel="stylesheet" href="css/animate.css">
+</head>
+<body>
+<div id="app">
+    <transition name="fade">
+        <child v-if="show"></child>
+    </transition>
+    <hr>
+    <!--因为可以通过给transition标签自定义动画过程中不同阶段的类名，所以可以使用animatecss库来实现动画-->
+    <transition name="fade" enter-active-class="animated bounce" leave-active-class="animated rubberBand" enter-to-class="animated ">
+        <child v-if="show"></child>
+    </transition>
+    <button @click="change">切换</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.component('child', {
+      template: '<div>Hello World</div>'
+    });
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        show: true,
+      },
+      methods: {
+        change: function () {
+          this.show = !this.show;
+        }
+      }
+    })
+</script>
+</body>
+</html>

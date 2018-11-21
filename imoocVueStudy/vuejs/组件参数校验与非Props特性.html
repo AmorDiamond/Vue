@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <child :number="1" content="2" :info="{id:1}" :objinfo="'顶顶顶223'"></child>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var child = {
+      props: {
+        number: Number,
+        content: String,
+        info: [Number, String],
+        objinfo: {
+          type: String,
+          required: false,
+          default: 'default Value',
+          validator: function(value) {
+            return (value.length > 5);
+          }
+        }
+      },
+      template: '<div>number {{number}}--content {{content}}--info {{info}}--objInfo {{objinfo}}</div>'
+    };
+    var vm = new Vue({
+      el: '#app',
+      components:{
+        child
+      },
+      data: {}
+    });
+</script>
+</body>
+</html>

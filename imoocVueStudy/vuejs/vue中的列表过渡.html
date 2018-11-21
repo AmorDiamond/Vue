@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .v-enter{
+            opacity: 0;
+        }
+        .v-enter-active{
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--多元素或组件的过渡-->
+    <!--给transition设置mode属性，可以控制动画的过渡模式(先后顺序)，支持in-out和out-in-->
+    <transition mode="out-in">
+        <component :is="type"></component>
+    </transition>
+    <button @click="change">切换</button>
+    <hr>
+    <!--列表过渡transition-group-->
+    <!--不设置tag属性，默认是span标签-->
+    <transition-group tag="ul">
+        <li v-for="(item, index) of list" :key="index">{{item}}</li>
+    </transition-group>
+    <button @click="handleAdd">新增</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.component('child', {
+      template: '<div>Hello World</div>'
+    });
+    Vue.component('child2', {
+      template: '<div>Bye World</div>'
+    });
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        type: 'child',
+        list: ['hello World']
+      },
+      methods: {
+        change: function () {
+          this.type = this.type === 'child' ? 'child2' : 'child';
+        },
+        handleAdd: function () {
+          this.list.push('Hello World');
+        },
+      }
+    })
+</script>
+</body>
+</html>

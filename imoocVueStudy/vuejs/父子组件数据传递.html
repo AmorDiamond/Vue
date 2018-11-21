@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <!--给子组件传值都是通过属性，如果在属性前加上:，则内容为js方式，没有:就是字符串-->
+    <counter count="0"></counter>
+    <counter :count="1"></counter>
+    <counter2 :count="2" @inc="handleInc"></counter2>
+    <div>{{total}}</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var counter = {
+      props: ['count'],
+      template: '<div>{{count}}</div>'
+    };
+    /*Vue里存在单项数据流概念，不允许子组件直接修改父组件传过来的值，为了避免存在多个组件共同接收同一个对象值后，一个组件修改传入的值后，导致其他组件也受影响，如果子组件需要修改父组件传过来的值，可以将值拷贝一份为自己的数据，然后将自己的数据做修改。*/
+    var counter2 = {
+      props: ['count'],
+      data: function () {
+        return {
+          number: this.count,
+        }
+      },
+      template: '<div @click="handleClick">{{number}}</div>',
+      methods: {
+        handleClick: function () {
+          this.number += 2;
+          /*子组件向父组件传值通过$emit触发事件，触发的事件需要在父组件设置和绑定*/
+          this.$emit('inc', 2)
+        }
+      }
+    };
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        counter,
+        counter2
+      },
+      data: {
+        total: 3,
+      },
+      methods: {
+        handleInc: function (step) {
+          this.total += step;
+        }
+      }
+    })
+</script>
+</body>
+</html>
