@@ -28,6 +28,7 @@
 </template>
 <script>
 import BScroll from 'better-scroll'
+import { mapMutations } from 'vuex'
 export default {
   name: 'CityList',
   props: {
@@ -37,9 +38,12 @@ export default {
   },
   methods: {
     chooseCity: function (city) {
-      this.$store.dispatch('changeCity', city)
+      // this.$store.dispatch('changeCity', city)
+      this.changeCity(city)
       this.$router.push('/')
-    }
+    },
+    ...mapMutations(['changeCity']), // 将 `this.changeCity()` 映射为 `this.$store.commit('changeCity')`
+    ...mapMutations({changeCity2: 'changeCity'}) // 将 `this.changeCity2()` 映射为 `this.$store.commit('changeCity')`
   },
   mounted () {
     this.scroll = new BScroll(this.$refs.wrapper)
