@@ -51,6 +51,7 @@ export default {
     right: 0;
     bottom: 0;
     background: #000;
+    z-index: 9;
     .wrapper
       color: #fff;
       .gallary-img

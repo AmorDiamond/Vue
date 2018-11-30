@@ -46,7 +46,15 @@ export default {
     ...mapMutations({changeCity2: 'changeCity'}) // 将 `this.changeCity2()` 映射为 `this.$store.commit('changeCity')`
   },
   mounted () {
-    this.scroll = new BScroll(this.$refs.wrapper)
+    // click:true 避免安卓手机出现BSscroll元素里@click事件不执行
+    this.scroll = new BScroll(this.$refs.wrapper, { click: true })
+  },
+  // 在router配置里添加上scrollBehavior只能控制原生的滚动条位置
+  // 因为城市列表使用的better-scroll插件，所以滚动到中间然后跳转到其他路由页面再回来还是滚动在中间位置
+  // 如果页面有被缓存，就只能在activated周期里处理，或者不缓存，重新让父组件请求数据渲染
+  activated () {
+    const el = this.$refs.wrapper
+    this.scroll.scrollToElement(el)
   },
   computed: {
     // letter2 () {

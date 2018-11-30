@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('/api/index.json?city=' + this.city).then(res => {
+      axios.get('static/mock/index.json?city=' + this.city).then(res => {
         if (res.status === 200) {
           this.getHomeInfoSucc(res.data)
         }

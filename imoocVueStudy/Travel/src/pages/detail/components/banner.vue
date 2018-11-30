@@ -7,15 +7,20 @@
         <div class="banner-number"><span class="iconfont banner-icon">&#xe616;</span>39</div>
       </div>
     </div>
-    <gallary-banner @close="handleGallaryClick" v-show="showGallary" :imgs="imgs"></gallary-banner>
+    <!--给详情轮播显示和隐藏添加动画组件-->
+    <fade-animation>
+      <gallary-banner @close="handleGallaryClick" v-show="showGallary" :imgs="imgs"></gallary-banner>
+    </fade-animation>
   </div>
 </template>
 <script>
 import GallaryBanner from 'common/gallary/gallary'
+import FadeAnimation from 'common/animation/fadeAnimation'
 export default {
   name: 'DetailBanner',
   components: {
-    GallaryBanner
+    GallaryBanner,
+    FadeAnimation
   },
   data () {
     return {

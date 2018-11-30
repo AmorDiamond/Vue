@@ -7,6 +7,7 @@
       <!-- slides -->
       <swiper-slide v-for="item of list" :key="item.id"><img class="swiper-img" :src="item.imgUrl" alt=""></swiper-slide>
       <!-- Optional controls -->
+      <!--这里的slot="pagination"和data里的swiperOption的pagination无关，可以看vue具名插槽，说明swiper组件里存在一个name为pagination的slot插槽，里面会将这个元素放进去显示-->
       <div class="swiper-pagination"  slot="pagination"></div>
       <!--<div class="swiper-button-prev" slot="button-prev"></div>
       <div class="swiper-button-next" slot="button-next"></div>-->

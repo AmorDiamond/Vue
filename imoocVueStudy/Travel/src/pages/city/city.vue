@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     getCityInfo: function () {
-      const url = '/api/city.json'
+      const url = 'static/mock/city.json'
       axios.get(url).then(res => {
         if (res.status === 200) {
           const data = res.data

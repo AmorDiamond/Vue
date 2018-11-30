@@ -14,7 +14,8 @@ module.exports = {
       '/api': {
         target: 'http://localhost:8080',
         pathRewrite: {
-          '^/api': '/static/mock'
+          // '^/api': '/static/mock'
+          '^static/mock': '/static/mock'
         }
       }
     },
@@ -57,7 +58,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/demo/vue/Travel',
 
     /**
      * Source Maps

@@ -30,11 +30,13 @@ export default {
     chooseCity: function (city) {
       // 非异步操作数据，可以直接跳过actions，直接使用commit通过mutations操作数据
       this.$store.commit('changeCity', city)
+      this.keyWords = '' // 避免返回城市页面搜索信息还存在
       this.$router.push('/')
     }
   },
   mounted () {
-    this.scroll = new Bscroll(this.$refs.search)
+    // click:true 避免安卓手机出现BSscroll元素里@click事件不执行
+    this.scroll = new Bscroll(this.$refs.search, {click: true})
   },
   computed: {
     hasNoData: function () {
